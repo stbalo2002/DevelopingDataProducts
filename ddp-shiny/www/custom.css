@@ -1,0 +1,50 @@
+/* Whole document: */
+	
+body{
+  line-height: 1.5;
+  }
+
+
+/* Headers */
+h1,h2,h3,h4,h5,h6 {
+  font-family: Verdana;
+  color: #acd1b2;
+  font-weight: bold;
+  }
+
+
+p {
+  font-family: Candara;
+  font-size: 14pt;
+  color: black;
+  }
+  
+  
+code {
+	 font-weight: bold;
+	 }
+ 
+ 
+em {
+	 font-weight: bold;
+	 color: black;
+	 font-family: Cambria;
+	 }
+	 
+	 
+#span1 {
+	color: blue;
+}
+
+
+#red {
+	color: darkred;
+}
+
+
+.main-header .logo {
+  font-family: "Georgia", Times, "Times New Roman", serif;
+  font-weight: bold;
+  font-size: 24px;
+}
+

@@ -1,0 +1,14 @@
+base
+RevoUtilsMath
+slidify
+leaflet
+shiny
+shinydashboard
+ggplot2
+plotly
+googleVis
+rCharts
+dplyr
+tidyr
+devtools
+knitr

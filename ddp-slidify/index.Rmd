@@ -1,0 +1,101 @@
+---
+title       : Developing Data Products Project
+subtitle    : Create a web page with Slidify or Rstudio Presenter
+author      : Balogun Stephen Taiye 
+job         : Data Science student
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [bootstrap, quiz, interactive]      # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+--- .class1
+
+## Introduction
+
+- This is my Developing Data Product class project2 report.  
+- It involves using <code>slidify</code> or <code>RStudio</code> to create an html slide containing only 5 pages.  
+
+This presentation makes use of the `mtcars` dataset that comes with R to perform some inferences on the performance of cars. The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973-74 models).  
+
+We will be looking at the relationship between the **miles per gallon** of fuel consumed in relation to the engine horsepower, number of cylinders and the automation of the gear (automatic or manual). 
+
+```{r, setup, echo = FALSE, message = FALSE, cache = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, results = "asis", fig.align = "center", fig.height = 4, fig.width = 8, dpi = 100, tidy = FALSE)
+
+## loading the required libraries ##
+
+library(ggplot2)
+library(dplyr)
+library(knitr)
+```
+
+
+
+```{r, "head mtcars"}
+kable(mtcars[1:3, ]) ## to print nicely formatted table
+```
+
+--- bg:lightgoldenrodyellow 
+
+## Miles per Gallon vs engine Horsepower
+
+Here, we look at the relationship between the **miles per gallon** and the engine **horsepower** only.
+
+
+
+```{r, "clean data"}
+data <- mtcars ## saves the `mtcars` dataset as `data`
+
+## next I clean up the data a little bit my renaming many of the variables ##
+
+data$am <- factor(data$am,levels = c(0, 1), labels = c("automatic", "manual"))
+data$cyl <- factor(data$cyl)
+data <- data %>% rename(cylinders = cyl) %>% 
+  rename(automation = am) %>%
+  rename(horsepower = hp) %>% 
+  rename(MilesPerGallon = mpg)
+```
+
+```{r, "mpg vs hp"}
+a <- ggplot(data = data, aes(x = horsepower, y = MilesPerGallon)) + 
+  geom_point(color = alpha("darkblue", 1/5), size = 4) + 
+  geom_smooth(method = "lm", se = FALSE, size = 0.5, color = alpha("red", 0.5)) +
+  labs(title = "Relationship between the miles per gallon consumed \n and the engine horsepower") +
+  theme_minimal()
+
+
+a
+```
+
+--- bg:powerblue
+
+## Cylinder effect on mpg
+
+Now that we have seen that there is a decline in the miles per gallon consumed as the horsepower of the engine increases, we look at how the number of engine cylinder affects this relationship.
+
+```{r, "mpg vs hp by cylinder"}
+b <- ggplot(data = data, aes(x = horsepower, y = MilesPerGallon, color = cylinders)) + 
+  geom_point() + geom_smooth(method = "lm", se = FALSE) + 
+  theme_minimal() +
+  labs(title = "Relationship between the miles per gallon consumed \n and horsepower for different engine cylinders")
+
+b
+```
+
+--- bg:whitesmoke
+
+## Effect of automation
+
+Finally, we look at how the automation of the car affects this relationship between `miles per gallon` and `horsepower`.
+
+```{r, "automation"}
+c <- ggplot(data= data, aes(x = horsepower, y = MilesPerGallon, shape = cylinders)) + 
+  scale_shape(solid = FALSE) +
+  geom_point(alpha = 0.5, size = 3, aes(color = automation)) + 
+  geom_smooth(aes(color = automation, group = automation), method = "lm", se = FALSE) + 
+  theme_minimal() + 
+  labs(title = "Relationship between the miles per gallon consumed \n and horsepower for different engine cylinders")
+
+c
+```
